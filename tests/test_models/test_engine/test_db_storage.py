@@ -46,13 +46,13 @@ class TestDBStorage(unittest.TestCase):
 
     @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") != 'db',
                      "can't run if storage is file")
-    def test_reload(self):
-        """Test for reload()"""
-        obj = DBStorage()
-        self.assertTrue(obj._DBStorage__engine is not None)
-        self.assertTrue(obj._DBStorage__session is None)
-        obj.reload()
-        self.assertTrue(obj._DBStorage__session is not None)
+    def test_new_DBStorage(self):
+        """Tests for new() method"""
+        nb = self.cursor.execute("SELECT COUNT(*) FROM states")
+        s = State(name="Oregon")
+        s.save()
+        nb1 = self.cursor.execute("SELECT COUNT(*) FROM states")
+        self.assertEqual(nb1 - nb, 0)
 
 if __name__ == "__main__":
     unittest.main()
