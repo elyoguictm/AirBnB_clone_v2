@@ -125,7 +125,7 @@ class HBNBCommand(cmd.Cmd):
             if arg not in HBNBCommand.classes.keys():
                 print(" **class doesn't exist** ")
 
-        else:
+        elif not arg:
             print(" **class name missing ** ")
 
     def help_create(self):
