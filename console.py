@@ -115,27 +115,19 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, arg):
-        """ Create an object of any class"""
-        args = arg.split(" ")
-        if arg == "" or arg is None:
-            print("** class name missing **")
+        if arg:
+            if arg in HBNBCommand.classes.keys():
+                newobject = HBNBCommand.classes[arg]()
+                newobject.save()
+                print(newobject.id)
+
+            if arg not in HBNBCommand.classes.keys():
+                print(" **class doesn't exist** ")
+
         else:
-            if args[0] not in HBNBCommand.classes():
-                print("** class doesn't exist **")
-                return
+            print(" **class name missing ** ")
 
-
-Command syntax: create < Class name > <param 1 > <param 2 > <param 3 > ...
-Param syntax: < key name >= <value >
-Value syntax:
-String: "<value>" = > starts with a double quote
-any double quote inside the value must be escaped with a backslash \
-all underscores _ must be replace by spaces . Example: You want to set the string My little house to the attribute name, your command line must be name = "My_little_house"
-Float: < unit > . < decimal > = > contains a dot .
-Integer: < number > = > default case
-If any parameter doesn’t fit with these requirements or can’t be recognized correctly by your program, it must be skipped
-
-   def help_create(self):
+    def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
         print("[Usage]: create <className>\n")
