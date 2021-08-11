@@ -1,68 +1,90 @@
 #!/usr/bin/python3
-"""Data base storage"""
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import create_engine, MetaData
-from sqlalchemy.orm import sessionmaker
+"""db storage file"""
+import datetime
 from os import getenv
-from models.base_model import Base, BaseModel
+from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy import create_engine
+from models.base_model import BaseModel, Base
 from models.user import User
-from models.place import Place
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
+from models.place import Place
 from models.review import Review
-from sqlalchemy.orm import scoped_session
 
 
 class DBStorage():
-    """Class DBStorage to run a database"""
+    """
+    New engine DBStorage
+    """
     __engine = None
     __session = None
 
     def __init__(self):
-        """Constructor """
-        engine = 'mysql+mysqldb://' + getenv('HBNB_MYSQL_USER') + ':'
-        engine += getenv('HBNB_MYSQL_PWD') + '@' + getenv('HBNB_MYSQL_HOST')
-        engine += '/' + getenv('HBNB_MYSQL_DB')
-
-        self.__engine = create_engine(engine, pool_pre_ping=True)
-        if (getenv("HBNB_ENV") == "test"):
-            meta = MetaData(self.__engine)
-            meta.reflect()
-            meta.drop_all()
-        Session = sessionmaker(self.__engine)
-        self.__session = Session()
+        """Init method"""
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
+                                      .format(getenv('HBNB_MYSQL_USER'),
+                                              getenv('HBNB_MYSQL_PWD'),
+                                              getenv('HBNB_MYSQL_HOST'),
+                                              getenv('HBNB_MYSQL_DB')),
+                                      pool_pre_ping=True)
+        if getenv('HBNB_ENV') == 'test':
+            Base.metadata.drop_all(bind=self.__engine)
 
     def all(self, cls=None):
-        """query on the current the database a specific class"""
-        if (cls):
-            classes = [cls]
+        """Returns dictionary"""
+        if cls:
+            objs = self.__session.query(self.classes()[cls])
         else:
-            classes = [State, City, User, Place, Review, Amenity]
-        dic = {}
-        for clas in classes:
-            for row in self.__session.query(clas).all():
-                dic.update({row.to_dict()['__class__'] + "." + row.id: row})
+            objs = self.__session.query(State).all()
+            objs += self.__session.query(City).all()
+            objs += self.__session.query(User).all()
+            objs += self.__session.query(Place).all()
+            objs += self.__session.query(Amenity).all()
+            objs += self.__session.query(Review).all()
 
-        return (dic)
+        dict = {}
+        for obj in objs:
+            key = '{}.{}'.format(type(obj).__name__, obj.id)
+            dict[key] = obj
+        return dict
 
     def new(self, obj):
-        """Adds an object to the current database session"""
-        if (obj):
-            self.__session.add(obj)
+        """add the object to the current database session (self.__session)"""
+        self.__session.add(obj)
 
     def save(self):
-        """Commit all changes of the current database session"""
+        """commit all changes of the current database session"""
         self.__session.commit()
 
     def delete(self, obj=None):
-        """Delete from the current database session obj"""
-        if (obj):
+        """delete from the current database session obj if not None"""
+        if obj:
             self.__session.delete(obj)
 
     def reload(self):
-        """Reload"""
+        """create the current database session (self.__session)"""
         Base.metadata.create_all(self.__engine)
-        self.__session = sessionmaker(self.__engine, expire_on_commit=False)
+        self.__session = sessionmaker(bind=self.__engine,
+                                      expire_on_commit=False)
         Session = scoped_session(self.__session)
         self.__session = Session()
+
+    def classes(self):
+        """Returns a dictionary of classes."""
+        from models.base_model import BaseModel
+        from models.user import User
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.place import Place
+        from models.review import Review
+
+        classes = {"BaseModel": BaseModel,
+                   "User": User,
+                   "State": State,
+                   "City": City,
+                   "Amenity": Amenity,
+                   "Place": Place,
+                   "Review": Review}
+        return classes
