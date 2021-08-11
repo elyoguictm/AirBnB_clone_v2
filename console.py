@@ -115,11 +115,12 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, arg):
+        """Creates a new instance of a class"""
         if arg:
             if arg in HBNBCommand.classes.keys():
-                newobject = HBNBCommand.classes[arg]()
-                newobject.save()
-                print(newobject.id)
+                nobj = HBNBCommand.classes[arg]()
+                nobj.save()
+                print(nobj.id)
 
             if arg not in HBNBCommand.classes.keys():
                 print(" **class doesn't exist** ")
