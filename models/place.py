@@ -23,13 +23,3 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     amenity_ids = []
-
-    if getenv("HBNB_TYPE_STORAGE") == "db":
-        reviews = relationship('Review', backref='place',
-                               cascade='all, delete-orphan')
-    else:
-        @property
-        def reviews(self):
-            """Getter attribute in file storage"""
-            return [review for review in models.storage.all(Review)
-                    if review.place_id == self.id]
