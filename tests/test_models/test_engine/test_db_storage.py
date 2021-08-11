@@ -44,6 +44,18 @@ class TestDBStorage(unittest.TestCase):
         p = style.check_files(['models/engine/db_storage.py'])
         self.assertEqual(p.total_errors, 0, "fix pep8")
 
+    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") != 'db',
+                     "can't run if storage is file")
+    def test_attributes_DBStorage(self):
+        """Tests for class attributes"""
+        self.assertTrue(hasattr(DBStorage, '_DBStorage__engine'))
+        self.assertTrue(hasattr(DBStorage, '_DBStorage__session'))
+        self.assertTrue(hasattr(DBStorage, 'all'))
+        self.assertTrue(hasattr(DBStorage, 'new'))
+        self.assertTrue(hasattr(DBStorage, 'save'))
+        self.assertTrue(hasattr(DBStorage, 'delete'))
+        self.assertTrue(hasattr(DBStorage, 'reload'))
+
 
 if __name__ == "__main__":
     unittest.main()
