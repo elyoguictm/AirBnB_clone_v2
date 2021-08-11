@@ -1,11 +1,8 @@
 #!/usr/bin/python3
 """This module defines a class User"""
-import models
-import sqlalchemy
 from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
-from sqlalchemy.sql.schema import Column
-from sqlalchemy.sql.sqltypes import String
+from sqlalchemy import Column, String
 
 
 class User(BaseModel, Base):
