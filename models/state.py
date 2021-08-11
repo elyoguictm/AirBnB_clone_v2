@@ -24,5 +24,5 @@ class State(BaseModel, Base):
             mycities = {}
             for city, value in storage.all(City).items():
                 if (value.state_id == self.id):
-                        mycities.update({city: value})
+                    mycities.update({city: value})
             return mycities
