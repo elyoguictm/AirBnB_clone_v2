@@ -123,10 +123,19 @@ class HBNBCommand(cmd.Cmd):
             if args[0] not in HBNBCommand.classes():
                 print("** class doesn't exist **")
                 return
-        
 
 
-    def help_create(self):
+Command syntax: create < Class name > <param 1 > <param 2 > <param 3 > ...
+Param syntax: < key name >= <value >
+Value syntax:
+String: "<value>" = > starts with a double quote
+any double quote inside the value must be escaped with a backslash \
+all underscores _ must be replace by spaces . Example: You want to set the string My little house to the attribute name, your command line must be name = "My_little_house"
+Float: < unit > . < decimal > = > contains a dot .
+Integer: < number > = > default case
+If any parameter doesn’t fit with these requirements or can’t be recognized correctly by your program, it must be skipped
+
+   def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
         print("[Usage]: create <className>\n")
