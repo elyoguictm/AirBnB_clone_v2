@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
+from os import getenv
 from models.base_model import BaseModel, Base
 from sqlalchemy import String, DateTime
 from sqlalchemy import Column, ForeignKey, Integer
@@ -7,6 +8,8 @@ from sqlalchemy import Float, Table
 from sqlalchemy.orm import relationship
 import models
 from models.review import Review
+from models.city import City
+from models.amenity import Amenity
 
 
 if getenv("HBNB_TYPE_STORAGE") == "db":
@@ -45,13 +48,13 @@ class Place(BaseModel, Base):
     else:
         @property
         def reviews(self):
-            """Getter attribute in case of file storage"""
+            """Getter attribute file storage"""
             return [review for review in models.storage.all(Review)
                     if review.place_id == self.id]
 
         @property
         def amenities(self):
-            """Getter attribute in case of file storage"""
+            """Getter attribute file storage"""
             return [amenity for amenity in models.storage.all(Amenity)
                     if amenity.id in self.amenity_ids]
 
