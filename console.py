@@ -114,30 +114,42 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
-        """Creates a new instance """
-
-        nlist = []
-        try:
-            if not args:
-                raise SyntaxError()
-            nlist = args.split(" ")
-            parameters = nlist[1:]
-            obj = eval("{}()".format(nlist[0]))
-            for parameter in parameters:
-                dobj = parameter.split("=")
-                if len(dobj) == 2:
-                    if type(dobj[1]) in [str, int, float]:
-                        dobj[1] = dobj[1].replace('"', '')
-                        dobj[1] = dobj[1].replace('_', ' ')
-                        setattr(obj, dobj[0], dobj[1])
-            obj.save()
-
-            print("{}".format(obj.id))
-        except SyntaxError:
+    def do_create(self, arg):
+        """ Create an object of any class"""
+        args = arg.split(" ")
+        if arg == "" or arg is None:
             print("** class name missing **")
-        except NameError:
-            print("** class doesn't exist **")
+        else:
+            if args[0] not in HBNBCommand.classes():
+                print("** class doesn't exist **")
+                return
+        
+        new_instance = HBNBCommand.classes[args[0]]()
+
+        for i in range(1, len(args)):
+            keysplit = args[i].split('=', 1)
+            value = ""
+            if keysplit[1][0] == '"':
+                value = caracter[1][1:-1]
+                if '_' in value:
+                    value = value.replace('_', ' ')
+                if '"' in value:
+                    value = value.replace('"', '\"')
+            else:
+                if '.' in keysplit[1]:
+                    try:
+                        value = float(keysplit[1])
+                    except:
+                        continue
+                else:
+                    try:
+                        value = int(keysplit[1])
+                    except:
+                        continue
+            if value != "":
+                setattr(new_instance, keysplit[0], value)
+        new_instance.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
