@@ -8,18 +8,21 @@ import json
 import os
 import pep8
 import unittest
+import os
+from os import getenv
+from models import storage
+from models.state import State
+import MySQLdb
 
 
 class test_basemodel(unittest.TestCase):
     """ Test for BaseModel """
 
-    def test_pep8_conformance(self):
-        """Test that base_model.py conforms to PEP8."""
-        for path in ['models/base_model.py',
-                     'tests/test_models/test_base_model.py']:
-            with self.subTest(path=path):
-                errors = pycodestyle.Checker(path).check_all()
-                self.assertEqual(errors, 0)
+    def test_pep8_BaseModel(self):
+        """Testing for pep8"""
+        style = pep8.StyleGuide(quiet=True)
+        p = style.check_files(['models/base_model.py'])
+        self.assertEqual(p.total_errors, 0, "fix pep8")
 
     def test_module_docstring(self):
         """Test for the existence of module docstring"""
