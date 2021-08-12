@@ -2,9 +2,12 @@
 """ """
 from tests.test_models.test_base_model import test_basemodel
 from models.user import User
+import unittest
+from models.user import User
+import pep8
 
 
-class test_User(test_basemodel):
+class test_User(unittest.TestCase):
     """ """
 
     def __init__(self, *args, **kwargs):
@@ -32,3 +35,13 @@ class test_User(test_basemodel):
         """ """
         new = self.value()
         self.assertEqual(type(new.password), str)
+
+    def test_pep8_console(self):
+        """test pep8 style"""
+        s = pep8.StyleGuide(quiet=True)
+        pep = s.check_files(['models/user.py'])
+        self.assertEqual(pep.total_errors, 0, 'Found errors.')
+
+
+if __name__ == '__main__':
+    unittest.main()

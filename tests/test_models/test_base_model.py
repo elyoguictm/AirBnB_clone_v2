@@ -34,7 +34,7 @@ class test_basemodel(unittest.TestCase):
                          "BaseModel class needs a docstring")
         self.assertTrue(len(BaseModel.__doc__) >= 1,
                         "BaseModel class needs a docstring")
-        
+
     def __init__(self, *args, **kwargs):
         """ Test for BaseModel """
         super().__init__(*args, **kwargs)
