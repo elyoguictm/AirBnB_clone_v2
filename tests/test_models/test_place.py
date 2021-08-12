@@ -10,6 +10,7 @@ Place = place.Place
 
 class pep8_test(unittest.TestCase):
     """ Test for the place """
+
     def test_pep8_conformance_place(self):
         """Test that place conforms to PEP8."""
         pep8s = pep8.StyleGuide(quiet=True)
@@ -72,7 +73,6 @@ class test_Place(test_basemodel):
         """ testing place """
         new = self.value()
         self.assertEqual(type(new.number_rooms), int)
-
 
     def test_to_dict_Place(self):
         """Testing place """

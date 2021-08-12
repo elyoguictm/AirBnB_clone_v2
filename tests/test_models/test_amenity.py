@@ -35,8 +35,8 @@ class pep8_test(unittest.TestCase):
                          "Amenity class needs a docstring")
         self.assertTrue(len(Amenity.__doc__) >= 1,
                         "Amenity class needs a docstring")
-    
-        def __init__(self, *args, **kwargs):
+
+    def __init__(self, *args, **kwargs):
         """ """
         super().__init__(*args, **kwargs)
         self.name = "Amenity"

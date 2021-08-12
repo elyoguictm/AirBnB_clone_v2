@@ -6,6 +6,7 @@ import unittest
 from models.user import User
 import pep8
 
+
 class test_state(unittest.TestCase):
     """ """
 
