@@ -1,4 +1,3 @@
-
 #!/usr/bin/python3
 """1. Compress before sending"""
 

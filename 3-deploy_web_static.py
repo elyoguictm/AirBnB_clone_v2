@@ -1,4 +1,3 @@
-
 #!/usr/bin/python3
 """
 do_pack(): Generates a .tgz archive from the
