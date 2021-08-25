@@ -2,7 +2,7 @@
 exec { 'apt-get-update':
   command => '/usr/bin/env apt-get -y update',
 }
--> exec {'b':cd .
+-> exec {'b':
   command => '/usr/bin/env apt-get -y install nginx',
 }
 -> exec {'c':
