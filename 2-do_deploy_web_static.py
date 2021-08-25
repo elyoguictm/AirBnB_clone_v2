@@ -54,7 +54,7 @@ def do_deploy(archive_path):
     res = run("sudo rm -rf /data/web_static/current")
     if res.failed:
         return False
-    res = run("sudo ln -s /data/web_static/releases/{}/ /data/web_static/current"
+    res = run("ln -s /data/web_static/releases/{}/ /data/web_static/current"
               .format(filename))
     if res.failed:
         return False
