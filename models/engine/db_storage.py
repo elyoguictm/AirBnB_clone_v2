@@ -88,3 +88,7 @@ class DBStorage():
                    "Place": Place,
                    "Review": Review}
         return classes
+
+    def close(self):
+        """calls rem"""
+        self.__session.close()
